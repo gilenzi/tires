@@ -4,8 +4,8 @@ import {createBrowserRouter, RouterProvider} from 'react-router';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import './index.css';
-import { Layout } from './ui/layout/layout.jsx';
-import { Shop } from './pages/shop.jsx';
+import {Layout} from './ui/layout/layout.jsx';
+import {Shop} from './pages/shop.jsx';
 
 const router = createBrowserRouter([
   {
