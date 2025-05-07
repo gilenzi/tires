@@ -5,7 +5,17 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import './index.css';
 import {Layout} from './ui/layout/layout.jsx';
-import {Shop} from './pages/shop.jsx';
+import {Shop} from './pages/shop/shop.jsx';
+import {TireDetails} from './pages/tire-details/tire-details.jsx';
+import {tireDetailsLoader} from './route-loaders/tire-details.js';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, //5 minutes
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -27,6 +37,14 @@ const router = createBrowserRouter([
       {
         path: 'shop',
         element: <Shop />,
+        // children: [
+
+        // ],
+      },
+      {
+        path: 'shop/tire/:id',
+        loader: tireDetailsLoader,
+        element: <TireDetails />,
       },
       {
         path: 'contact-us',
@@ -35,14 +53,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, //5 minutes
-    },
-  },
-});
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

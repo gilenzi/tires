@@ -1,5 +1,5 @@
 const {Model, DataTypes} = require('sequelize');
-const sequelize = require('../db/mysql-connect'); // this is the Sequelize instance now
+const sequelize = require('../db/mysql-connect');
 
 const Brands = require('./brands');
 const Height = require('./height');
@@ -10,7 +10,24 @@ const Type = require('./type');
 class Tires extends Model {
   static async getAllTires() {
     try {
-      return await Tires.findAll();
+      return await Tires.findAll({
+        attributes: {
+          exclude: [
+            'brand_id',
+            'height_id',
+            'width_id',
+            'radius_id',
+            'type_id',
+          ],
+        },
+        include: [
+          {model: Brands, as: 'brand'},
+          {model: Height, as: 'height'},
+          {model: Width, as: 'width'},
+          {model: Radius, as: 'radius'},
+          {model: Type, as: 'type'},
+        ],
+      });
     } catch (error) {
       throw error;
     }
@@ -108,10 +125,11 @@ Tires.init(
   }
 );
 
-Tires.belongsTo(Brands, {foreignKey: 'brand_id'});
-Tires.belongsTo(Height, {foreignKey: 'height_id'});
-Tires.belongsTo(Width, {foreignKey: 'width_id'});
-Tires.belongsTo(Radius, {foreignKey: 'radius_id', as: 'radius'}); // Fix alias here
-Tires.belongsTo(Type, {foreignKey: 'type_id'});
+// Define associations with aliases for readable output
+Tires.belongsTo(Brands, {foreignKey: 'brand_id', as: 'brand'});
+Tires.belongsTo(Height, {foreignKey: 'height_id', as: 'height'});
+Tires.belongsTo(Width, {foreignKey: 'width_id', as: 'width'});
+Tires.belongsTo(Radius, {foreignKey: 'radius_id', as: 'radius'});
+Tires.belongsTo(Type, {foreignKey: 'type_id', as: 'type'});
 
 module.exports = Tires;

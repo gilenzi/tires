@@ -1,4 +1,3 @@
-const db = require('../db/mysql-connect');
 const Tires = require('../models/tires');
 exports.getTires = async (req, res) => {
   try {

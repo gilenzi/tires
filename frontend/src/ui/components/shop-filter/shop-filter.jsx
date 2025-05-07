@@ -44,7 +44,7 @@ export function ShopFilter(props) {
             </FilterHeader>
           </StyledAccordionItemButton>
           <StyledAccordionItemContent name="type-of-ride">
-            Accordion price desc
+            Accordion type desc
           </StyledAccordionItemContent>
         </StyledAccordionItem>
 
@@ -61,7 +61,7 @@ export function ShopFilter(props) {
             </FilterHeader>
           </StyledAccordionItemButton>
           <StyledAccordionItemContent>
-            Accordion discount desc
+            Accordion price desc
           </StyledAccordionItemContent>
         </StyledAccordionItem>
       </Accordion>

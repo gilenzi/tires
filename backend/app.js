@@ -9,6 +9,14 @@ const PORT = 3000;
 
 const app = express();
 
+// CORS: Allow requests from Vite frontend
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // or '*' for all origins (not recommended for production)
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 // Middleware to parse URL-encoded bodies (form submissions)
 app.use(express.urlencoded({extended: true}));
