@@ -9,11 +9,15 @@ import {
   FilterWrapper,
   StyledIcon,
 } from './styled-components';
+import {FilterParamsList} from './filter-params-list';
+import {useShopFilters} from '../../../hooks/shop-filters';
 
-export function ShopFilter(props) {
+export function ShopFilter() {
+  const {brands, types} = useShopFilters();
+
   return (
     <FilterWrapper>
-      <Accordion defaultItem="brand">
+      <Accordion defaultItem="brand" multiple>
         <StyledAccordionItem name="brand">
           <StyledAccordionItemButton>
             <FilterHeader>
@@ -27,7 +31,7 @@ export function ShopFilter(props) {
             </FilterHeader>
           </StyledAccordionItemButton>
           <StyledAccordionItemContent>
-            <p>Accordion brand desc</p>
+            <FilterParamsList data={brands} dataName="brand" />
           </StyledAccordionItemContent>
         </StyledAccordionItem>
 
@@ -44,7 +48,7 @@ export function ShopFilter(props) {
             </FilterHeader>
           </StyledAccordionItemButton>
           <StyledAccordionItemContent name="type-of-ride">
-            Accordion type desc
+            <FilterParamsList data={types} dataName="type" />
           </StyledAccordionItemContent>
         </StyledAccordionItem>
 

@@ -1,10 +1,21 @@
-import {useEffect} from 'react';
-import {useLoaderData} from 'react-router';
+import {useQuery} from '@tanstack/react-query';
+import {useParams} from 'react-router';
+import {getTireById} from '../../api/tires';
 
 export function TireDetails(props) {
-  const loaderData = useLoaderData();
+  const {id} = useParams();
+  const tireDetailsQuery = useQuery({
+    queryKey: ['tire-details', id],
+    queryFn: () => getTireById(id),
+  });
 
-  console.log(loaderData);
+  if (tireDetailsQuery.isLoading) return <h1>Loading details</h1>;
+  if (tireDetailsQuery.isError) return <h1>Error loading details</h1>;
 
-  return <div>TIRE DETAILS</div>;
+  return (
+    <div>
+      <h1>TIRE DETAILS</h1>
+      {tireDetailsQuery.data.tire_id}
+    </div>
+  );
 }

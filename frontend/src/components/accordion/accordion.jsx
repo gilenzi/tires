@@ -2,12 +2,16 @@ import React, {createContext, useContext, useState} from 'react';
 
 export const AccordionContext = createContext();
 
-export function Accordion({children, defaultItem = ''}) {
-  const [currentItem, setCurrentItem] = useState(defaultItem);
+export function Accordion({children, defaultItem = '', multiple = false}) {
+  const [currentItems, setCurrentItems] = useState(
+    defaultItem ? [defaultItem] : []
+  );
 
   return (
     <div className="accordion">
-      <AccordionContext.Provider value={{currentItem, setCurrentItem}}>
+      <AccordionContext.Provider
+        value={{currentItems, setCurrentItems, multiple}}
+      >
         {children}
       </AccordionContext.Provider>
     </div>
@@ -15,45 +19,53 @@ export function Accordion({children, defaultItem = ''}) {
 }
 
 export function AccordionItem({children, className, name}) {
-  const {currentItem} = useContext(AccordionContext);
+  const {currentItems} = useContext(AccordionContext);
 
-  const childrenWithName = React.Children.map(children, (child) =>
-    React.isValidElement(child) ? React.cloneElement(child, {name}) : child
+  const isActive = currentItems.includes(name);
+  const childrenWithProps = React.Children.map(children, (child) =>
+    React.isValidElement(child)
+      ? React.cloneElement(child, {name, isActive})
+      : child
   );
 
   return (
     <div
-      className={`accordion-item ${currentItem === name ? 'active' : ''} ${
+      className={`accordion-item ${isActive ? 'active' : ''} ${
         className || ''
       }`}
     >
-      {childrenWithName}
+      {childrenWithProps}
     </div>
   );
 }
 
-export function AccordionItemButton({children, name, className}) {
-  const {currentItem, setCurrentItem} = useContext(AccordionContext);
+export function AccordionItemButton({children, name, isActive, className}) {
+  const {setCurrentItems, multiple} = useContext(AccordionContext);
 
   function selectItem() {
-    setCurrentItem((prevName) => (prevName === name ? '' : name));
+    setCurrentItems((prevNames) => {
+      const alreadySelected = prevNames.includes(name);
+
+      if (!alreadySelected) {
+        return multiple ? [...prevNames, name] : [name];
+      }
+
+      return prevNames.filter((prevName) => prevName !== name);
+    });
   }
+
   return (
     <button
       onClick={selectItem}
-      className={`accordion-btn ${currentItem === name ? 'active' : ''} ${
-        className || ''
-      }`}
+      className={`accordion-btn ${isActive ? 'active' : ''} ${className || ''}`}
     >
       {children}
     </button>
   );
 }
 
-export function AccordionItemContent({children, name, className}) {
-  const {currentItem} = useContext(AccordionContext);
-
-  if (name !== currentItem) return null;
+export function AccordionItemContent({children, name, isActive, className}) {
+  if (!isActive) return null;
 
   return (
     <div className={`accordion-item-content ${className}`}>{children}</div>

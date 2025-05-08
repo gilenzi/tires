@@ -1,7 +1,8 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -11,6 +12,7 @@
   /* color: rgba(255, 255, 255, 0.87); */
 }
 
-.root, .main-layout{
+.root,
+.main-layout {
   min-height: 100vh;
 }

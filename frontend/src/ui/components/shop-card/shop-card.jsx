@@ -5,6 +5,8 @@ import {
   Price,
   PriceSection,
   Specifications,
+  BrandWrapper,
+  TireImageWrapper,
 } from './styled-components';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -25,13 +27,18 @@ export function ShopCard({cardData}) {
 
   return (
     <Card>
-      <Brand
-        src={`${apiUrl}${brand_image}`}
-        alt={`Brand ${brand_name} image`}
-      />
-      <Specifications>{specifications}</Specifications>
+      <BrandWrapper>
+        <Brand
+          className="brand-img"
+          src={`${apiUrl}${brand_image}`}
+          alt={`Brand ${brand_name} image`}
+        />
+      </BrandWrapper>
 
-      <TireImage src={`${apiUrl}${image_url}`} alt="Tire image" />
+      <Specifications>{specifications}</Specifications>
+      <TireImageWrapper>
+        <TireImage src={`${apiUrl}${image_url}`} alt="Tire image" />
+      </TireImageWrapper>
 
       <PriceSection>
         <Price>{price}</Price>

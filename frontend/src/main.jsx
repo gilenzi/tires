@@ -7,7 +7,6 @@ import './index.css';
 import {Layout} from './ui/layout/layout.jsx';
 import {Shop} from './pages/shop/shop.jsx';
 import {TireDetails} from './pages/tire-details/tire-details.jsx';
-import {tireDetailsLoader} from './route-loaders/tire-details.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,13 +36,9 @@ const router = createBrowserRouter([
       {
         path: 'shop',
         element: <Shop />,
-        // children: [
-
-        // ],
       },
       {
         path: 'shop/tire/:id',
-        loader: tireDetailsLoader,
         element: <TireDetails />,
       },
       {
