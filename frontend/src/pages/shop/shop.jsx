@@ -1,29 +1,59 @@
-import {getTires} from '../../api/tires';
 import {ShopFilter} from '../../ui/components/shop-filter/shop-filter';
-import {useQuery} from '@tanstack/react-query';
 import {ShopMain} from './styled-components';
-import {ShopCard} from '../../ui/components/shop-card/shop-card';
 import {ShopCardList} from '../../ui/components/shop-card-list/shop-card-list';
+import {useShopPage} from '../../hooks/shop-page';
+import {Spinner} from '../../ui/components/spinner';
+import {useShopFilters} from '../../hooks/shop-filters';
+import {useState} from 'react';
+import {Pagination} from '../../ui/components/pagination/pagination';
 
 export function Shop() {
-  const tiresQuery = useQuery({
-    queryKey: ['tires'],
-    queryFn: () => getTires(),
-  });
+  const [currentPage, setCurrentPage] = useState(0);
+  const displayPerPage = 5;
+  const {
+    data: tiresData,
+    totalItemsLength,
+    isLoading: isShopPageLoading,
+    isError,
+  } = useShopPage({currentPage, displayPerPage});
+  const {brands, types, isLoading: isFiltersLoading} = useShopFilters();
 
-  if (tiresQuery.isLoading) return <h1>Loading tires</h1>;
-  if (tiresQuery.isError) return <h1>Error for fething tires</h1>;
+  const isLoading = isFiltersLoading && isShopPageLoading;
 
-  // const cards = tiresQuery.data.map((tire) => (
-  //   <ShopCard />
-  // ))
+  const minPrice = tiresData.reduce(
+    (min, tire) => (tire.price < min ? tire.price : min),
+    Infinity
+  );
+
+  const maxPrice = tiresData.reduce(
+    (min, tire) => (tire.price > min ? tire.price : min),
+    -Infinity
+  );
 
   return (
     <main>
       <ShopMain>
-        <ShopFilter />
-        <ShopCardList cards={tiresQuery.data} />
+        {isLoading ? (
+          <Spinner width={'55px'} height={'55px'} />
+        ) : (
+          <>
+            <ShopFilter
+              brands={brands}
+              types={types}
+              price={{minPrice, maxPrice}}
+            />
+            <ShopCardList cards={tiresData} />
+          </>
+        )}
       </ShopMain>
+      {!isLoading && (
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          displayPerPage={displayPerPage}
+          totalItemsLength={totalItemsLength}
+        />
+      )}
     </main>
   );
 }

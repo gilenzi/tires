@@ -10,11 +10,15 @@ import {
   StyledIcon,
 } from './styled-components';
 import {FilterParamsList} from './filter-params-list';
-import {useShopFilters} from '../../../hooks/shop-filters';
+import {PriceFilter} from '../price-filter';
+import {useSearchParams} from 'react-router';
 
-export function ShopFilter() {
-  const {brands, types} = useShopFilters();
+export function ShopFilter({brands, types, price}) {
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  function resetFitler() {
+    setSearchParams({});
+  }
   return (
     <FilterWrapper>
       <Accordion defaultItem="brand" multiple>
@@ -65,10 +69,11 @@ export function ShopFilter() {
             </FilterHeader>
           </StyledAccordionItemButton>
           <StyledAccordionItemContent>
-            Accordion price desc
+            <PriceFilter price={price} />
           </StyledAccordionItemContent>
         </StyledAccordionItem>
       </Accordion>
+      <button onClick={resetFitler}>Reset filter</button>
     </FilterWrapper>
   );
 }

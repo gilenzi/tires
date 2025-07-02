@@ -7,6 +7,14 @@ import './index.css';
 import {Layout} from './ui/layout/layout.jsx';
 import {Shop} from './pages/shop/shop.jsx';
 import {TireDetails} from './pages/tire-details/tire-details.jsx';
+import {Home} from './pages/home/home.jsx';
+import {Login} from './pages/login/login.jsx';
+import {Provider} from 'react-redux';
+import {store} from './state/store.js';
+import {App} from './App.jsx';
+import {ProtectedRoute} from './components/protected-route/protected-route.jsx';
+import {Dashboard} from './pages/dashboard/dashboard.jsx';
+import {PersistLogin} from './components/persist-login/persist-login.jsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,31 +27,52 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <PersistLogin />, // handles token refresh
     children: [
       {
-        index: true,
-        element: <h1>Home page</h1>,
-      },
-      {
-        path: 'about-us',
-        element: <h1>About us</h1>,
-      },
-      {
-        path: 'services',
-        element: <h1>Services</h1>,
-      },
-      {
-        path: 'shop',
-        element: <Shop />,
-      },
-      {
-        path: 'shop/tire/:id',
-        element: <TireDetails />,
-      },
-      {
-        path: 'contact-us',
-        element: <h1>Contact Us</h1>,
+        element: <Layout />, // provides nav/header etc.
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: 'about-us',
+            element: <h1>About us</h1>,
+          },
+          {
+            path: 'services',
+            element: (
+              <ProtectedRoute allowedRoles={['user', 'admin']}>
+                <h1>Services</h1>
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'shop',
+            element: <Shop />,
+          },
+          {
+            path: 'shop/tire/:id',
+            element: <TireDetails />,
+          },
+          {
+            path: 'contact-us',
+            element: <h1>Contact Us</h1>,
+          },
+          {
+            path: 'dashboard',
+            element: (
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Dashboard />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'login',
+            element: <Login />,
+          },
+        ],
       },
     ],
   },
@@ -51,9 +80,13 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <App>
+          <RouterProvider router={router} />
+        </App>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </Provider>
   </StrictMode>
 );

@@ -116,6 +116,42 @@ Tires.init(
     image_url: {
       type: DataTypes.STRING,
     },
+    discount_price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    warranty: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    recommended: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    best_selling: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    quality_class: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    noise: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    consumption: {
+      type: DataTypes.CHAR,
+      allowNull: false,
+    },
+    speed_index: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    load_index: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,

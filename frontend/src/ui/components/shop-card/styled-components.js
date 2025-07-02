@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const Card = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,6 +14,16 @@ export const Card = styled.div`
   &:hover .brand-img {
     filter: grayscale(0);
     opacity: 1;
+  }
+
+  & .card-tag-list {
+    position: absolute;
+    top: 9rem;
+    left: 0;
+  }
+
+  & .tire-type-wrapper {
+    margin-bottom: 1rem;
   }
 `;
 
@@ -52,14 +63,29 @@ export const TireImage = styled.img`
 `;
 
 export const PriceSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   border-top: 1px solid #c2d4e5;
   width: 100%;
+  padding-top: 1rem;
 `;
 
 export const Price = styled.span`
   display: block;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   color: #1b2e3f;
-  font-weight: 500;
+  font-weight: 700;
   text-align: center;
+
+  ${({variant}) => {
+    return (
+      variant === 'discount' &&
+      css`
+        text-decoration: line-through;
+        font-size: 1rem;
+      `
+    );
+  }}
 `;

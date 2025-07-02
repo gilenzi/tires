@@ -4,6 +4,8 @@ import {FaPhone, FaMapMarker, FaRegClock} from 'react-icons/fa';
 import {Logo} from '../components/logo';
 import {Navigation} from '../components/navigation';
 import {ThemeToggle} from '../components/theme-toggle';
+import {useSelector} from 'react-redux';
+import {logout} from '../../api/authentication';
 
 const StyledHeader = styled.header`
   background-color: #fff;
@@ -28,6 +30,72 @@ const StyledThemeToggle = styled(ThemeToggle)`
 const iconProps = {style: {color: 'white', fontSize: '20px'}};
 
 export function Header() {
+  const user = useSelector((state) => state.user);
+  const isLoggedIn = user.accessToken;
+  const navItems = [
+    {
+      text: 'Home',
+      link: '/',
+      children: [],
+    },
+    {
+      text: 'Shop',
+      link: '/shop',
+      children: [],
+    },
+    {
+      text: 'About us',
+      link: '/about-us',
+      children: [],
+    },
+    {
+      text: 'Services',
+      link: '/services',
+      children: [
+        {
+          text: 'Tire Rotation Services',
+          link: '/tire-rotation-services',
+          children: [],
+        },
+        {
+          text: 'Tire Alignment Services',
+          link: '/tire-alignment-services',
+          children: [
+            {
+              text: 'Shop',
+              link: '/shop',
+              children: [],
+            },
+            {
+              text: 'Contact Us',
+              link: '/contact-us',
+              children: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      text: 'Contact Us',
+      link: '/contact-us',
+      children: [],
+    },
+    {
+      text: 'Dashboard',
+      link: '/dashboard',
+      children: [],
+    },
+    {
+      text: isLoggedIn ? 'Logout' : 'Login',
+      callback: async () => {
+        if (!isLoggedIn) return;
+        const logoutResponse = await logout({token: user.accessToken});
+      },
+      link: '/login',
+      children: [],
+    },
+  ];
+
   return (
     <StyledHeader>
       <StyledHeaderTop>
@@ -51,8 +119,10 @@ export function Header() {
           icon={FaRegClock}
         />
         <StyledThemeToggle />
+
+        {user.name && <p>Logged user: {user.name}</p>}
       </StyledHeaderTop>
-      <Navigation />
+      <Navigation navItems={navItems} />
     </StyledHeader>
   );
 }

@@ -33,6 +33,9 @@ Brands.init(
     image_url: {
       type: DataTypes.STRING,
     },
+    description: {
+      type: DataTypes.STRING,
+    },
   },
   {
     sequelize,

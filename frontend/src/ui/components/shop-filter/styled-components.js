@@ -38,7 +38,7 @@ export const StyledAccordionItemButton = styled(BaseAccordionItemButton)`
 `;
 
 export const StyledAccordionItemContent = styled(BaseAccordionItemContent)`
-  border: 1px solid #333;
+  /* border: 1px solid #333; */
 `;
 
 export const StyledIcon = styled.div`

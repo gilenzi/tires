@@ -1,13 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-// const tiresRoutes = require('./routes/tires');
-// const brandsRoutes = require('./routes/brands');
+const cookieParser = require('cookie-parser');
+
 const routes = require('./routes/routes');
+const authRoutes = require('./routes/authentication');
 
 const HOST = 'http://localhost';
 const PORT = 3000;
 
 const app = express();
+
+// ✅ Middleware: Parse cookies from incoming requests
+app.use(cookieParser());
 
 // CORS: Allow requests from Vite frontend
 app.use(
@@ -22,6 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // ROUTES
+app.use('/api/auth', authRoutes);
+
 app.use(routes);
 
 // HANDLE IMAGES

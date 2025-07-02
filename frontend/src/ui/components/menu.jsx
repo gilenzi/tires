@@ -63,6 +63,7 @@ function RecursiveMenu({items, isSubMenu = false}) {
     <NavList className={isSubMenu ? 'sub-menu' : ''}>
       {items.map((item) => (
         <NavListItem
+          onClick={item?.callback}
           key={item.link}
           className={hasSubMenu(item) > 0 ? 'sub-menu-host-item' : ''}
         >

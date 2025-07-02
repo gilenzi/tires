@@ -1,11 +1,15 @@
-import axios from 'axios';
+import api from './axios';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+function formatDataForPagination(currentPage, displayPerPage, data) {
+  const start = currentPage * displayPerPage;
+  const end = start + displayPerPage;
+  return data.slice(start, end);
+}
 
 export function getTires() {
-  return axios.get(`${apiUrl}/tires`).then((res) => res.data);
+  return api.get(`/tires`).then((res) => res.data);
 }
 
 export function getTireById(id) {
-  return axios.get(`${apiUrl}/tires/${id}`).then((res) => res.data);
+  return api.get(`/tires/${id}`).then((res) => res.data);
 }
